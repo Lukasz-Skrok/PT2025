@@ -20,6 +20,7 @@ namespace TP.InformationComputation.LayeredArchitecture.Logic
     public ServiceA(ServiceB? serviceB)
     {
       Service = serviceB;
+            //test
     }
 
     public IService? Service { get; set; }
