@@ -30,55 +30,55 @@ namespace DataLayer
         private User_data users = new User_data();
         private Item_catalog catalog = new Item_catalog();
         private Store_state store = new Store_state();
-        public int GetAmount(string prod_name)
+        public virtual int GetAmount(string prod_name)
         {
             return store.GetAmount(prod_name);
         }
-        public UserType GetUser(long id)
+        public virtual UserType GetUser(long id)
         {
             return users.GetUser(id);
         }
-        public float GetPrice(string name)
+        public virtual float GetPrice(string name)
         {
             return catalog.GetPrice(name);
         }
-        public bool CheckStorage(string prod_name, int amount)
+        public virtual bool CheckStorage(string prod_name, int amount)
         {
             return store.CheckStorage(prod_name, amount);
         }
-        public bool CheckFunds(float price) 
+        public virtual bool CheckFunds(float price) 
         {
             return store.CheckFunds(price);
         }
-        public void IncreaseStock(string name, int amount) 
+        public virtual void IncreaseStock(string name, int amount) 
         {
             store.IncreaseStock(name, amount);
         }
-        public void RecordProfit(float money) 
+        public virtual void RecordProfit(float money) 
         { 
             store.RecordProfit(money);
         }
-        public void AddItem(string prod_name, float price)
+        public virtual void AddItem(string prod_name, float price)
         {
             catalog.AddItem(prod_name, price);
         }
-        public void RemoveItem(string prod_name)
+        public virtual void RemoveItem(string prod_name)
         {
             catalog.RemoveItem(prod_name);
         }
-        public void AddToStorage(string prod_name, int amount)
+        public virtual void AddToStorage(string prod_name, int amount)
         {
             store.AddToStorage(prod_name, amount);
         }
-        public void RemoveFromStorage(string prod_name)
+        public virtual void RemoveFromStorage(string prod_name)
         {
             store.RemoveFromStorage(prod_name);
         }
-        public void AddUser(long id, UserType type)
+        public virtual void AddUser(long id, UserType type)
         {
             users.AddUser(id, type);
         }
-        public void RemoveUser(long id)
+        public virtual void RemoveUser(long id)
         {
             users.RemoveUser(id);
         }

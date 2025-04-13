@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    internal class Item_catalog
+    public class Item_catalog
     {
         public Dictionary<string, float> ItemStorage = new Dictionary<string, float>();
         public void AddItem(string name, float price)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    internal class Store_state
+    public class Store_state
     {
         private float totalFunds=0;
         private Dictionary<string, int> itemStorage = new Dictionary<string, int>();

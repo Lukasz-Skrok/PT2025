@@ -9,21 +9,21 @@ namespace LogicLayer
 {
     public class Purchase_logic
     {
-        private readonly Events events;
+        private readonly Events events1;
         public Purchase_logic(Events events)
         {
-            this.events = events;
+            events1 = events;
         }
         public bool Purchase(string name, int amount)
         {
-            bool inStorage = events.CheckStorage(name, amount);
+            bool inStorage = events1.CheckStorage(name, amount);
             if (!inStorage)
             {
                 return false;
             }
-            float cost = amount * events.GetPrice(name);
-            events.AddToStorage(name, (-1) * amount);
-            events.RecordProfit(cost);
+            float cost = amount * events1.GetPrice(name);
+            events1.AddToStorage(name, (-1) * amount);
+            events1.RecordProfit(cost);
             return true;
         }
     }

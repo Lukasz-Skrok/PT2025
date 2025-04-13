@@ -9,22 +9,22 @@ namespace LogicLayer
 {
     public class Shipment_logic
     {
-        private readonly Events events;
+        private readonly Events events1;
         public Shipment_logic(Events events)
         {
-            this.events = events;
+                events1 = events;
         }
         public bool Shipment(string prod_name, int amount)
         {
-            float shipment_price = events.GetPrice(prod_name) * amount * (float)0.2;
+            float shipment_price = events1.GetPrice(prod_name) * amount * (float)0.2;
             shipment_price = (float)Math.Round(shipment_price, 2);
-            bool canAfford = events.CheckFunds(shipment_price);
+            bool canAfford = events1.CheckFunds(shipment_price);
             if (!canAfford)
             {
                 return false;
             }
-            events.AddToStorage(prod_name, amount);
-            events.RecordProfit(shipment_price * (-1));
+            events1.AddToStorage(prod_name, amount);
+            events1.RecordProfit(shipment_price * (-1));
             return true;
         }
     }
