@@ -26,5 +26,15 @@ namespace LogicLayerTests
             bool result = buyer.Purchase("Ball", 2);
             Assert.IsFalse(result);
         }
+
+        [TestMethod]
+        public void Shipment_Fail()
+        {
+            var temp = new TestEvents();
+            var shipment = new Shipment_logic(temp);
+            temp.AddItem("Ball", 2.0f);
+            bool result = shipment.Shipment("Ball", 100);
+            Assert.IsFalse(result);
+        }
     }
 }
