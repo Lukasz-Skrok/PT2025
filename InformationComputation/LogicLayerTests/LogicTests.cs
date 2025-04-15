@@ -36,5 +36,14 @@ namespace LogicLayerTests
             bool result = shipment.Shipment("Ball", 100);
             Assert.IsFalse(result);
         }
+
+        [TestMethod]
+        public void Shipment_Fail_No_Item()
+        {
+            var temp = new TestEvents();
+            var shipment = new Shipment_logic(temp);
+            bool result = shipment.Shipment("Ball", 1);
+            Assert.IsFalse(result);
+        }
     }
 }
