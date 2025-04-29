@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    public class User_data
+    public abstract class User_data
     {
         public enum UserType
         {

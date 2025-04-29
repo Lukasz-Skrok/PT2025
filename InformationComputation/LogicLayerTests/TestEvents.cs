@@ -14,9 +14,9 @@ namespace LogicLayerTests
 
     internal class TestEvents : Events
     {
-        private User_data users = new();
-        private Item_catalog catalog = new();
-        private Store_state store = new();
+        private User_data users = new UserData();
+        private Item_catalog catalog = new ItemCatalog();
+        private Store_state store = new StoreState();
         float totalFunds = (float)15.0;
         public override int GetAmount(string prod_name)
         {

@@ -9,6 +9,9 @@ using static DataLayer.User_data;
 
 namespace DataLayer
 {
+    public class UserData : User_data { };
+    public class ItemCatalog : Item_catalog { };
+    public class StoreState : Store_state { };
     public interface Events_interface
     {
         UserType GetUser(long id);
@@ -27,9 +30,9 @@ namespace DataLayer
     }
     public class Events : Events_interface
     {
-        private User_data users = new User_data();
-        private Item_catalog catalog = new Item_catalog();
-        private Store_state store = new Store_state();
+        private User_data users = new UserData();
+        private Item_catalog catalog = new ItemCatalog();
+        private Store_state store = new StoreState();
         public virtual int GetAmount(string prod_name)
         {
             return store.GetAmount(prod_name);
