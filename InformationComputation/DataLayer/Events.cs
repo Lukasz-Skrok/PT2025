@@ -12,78 +12,41 @@ namespace DataLayer
     public class UserData : User_data { };
     public class ItemCatalog : Item_catalog { };
     public class StoreState : Store_state { };
-    public interface Events_interface
+    public abstract class DataAPI
     {
-        UserType GetUser(long id);
-        float GetPrice(string name);
-        bool CheckStorage(string prod_name, int amount);
-        bool CheckFunds(float price);
-        void IncreaseStock(string prod_name, int amount);
-        void RecordProfit(float money);
-        void AddItem(string name, float price);
-        void RemoveItem(string name);
-        void AddToStorage(string prod_name, int amount);
-        void RemoveFromStorage(string prod_name);
-        void AddUser(long id, UserType type);
-        void RemoveUser(long id);
-        int GetAmount(string prod_name);
+        public abstract UserType GetUser(long id);
+        public abstract float GetPrice(string name);
+        public abstract bool CheckStorage(string prod_name, int amount);
+        public abstract bool CheckFunds(float price);
+        public abstract void IncreaseStock(string prod_name, int amount);
+        public abstract void RecordProfit(float money);
+        public abstract void AddItem(string name, float price);
+        public abstract void RemoveItem(string name);
+        public abstract void AddToStorage(string prod_name, int amount);
+        public abstract void RemoveFromStorage(string prod_name);
+        public abstract void AddUser(long id, UserType type);
+        public abstract void RemoveUser(long id);
+        public abstract int GetAmount(string prod_name);
     }
-    public class Events : Events_interface
+
+    public class Events : DataAPI
     {
         private User_data users = new UserData();
         private Item_catalog catalog = new ItemCatalog();
         private Store_state store = new StoreState();
-        public virtual int GetAmount(string prod_name)
-        {
-            return store.GetAmount(prod_name);
-        }
-        public virtual UserType GetUser(long id)
-        {
-            return users.GetUser(id);
-        }
-        public virtual float GetPrice(string name)
-        {
-            return catalog.GetPrice(name);
-        }
-        public virtual bool CheckStorage(string prod_name, int amount)
-        {
-            return store.CheckStorage(prod_name, amount);
-        }
-        public virtual bool CheckFunds(float price) 
-        {
-            return store.CheckFunds(price);
-        }
-        public virtual void IncreaseStock(string name, int amount) 
-        {
-            store.IncreaseStock(name, amount);
-        }
-        public virtual void RecordProfit(float money) 
-        { 
-            store.RecordProfit(money);
-        }
-        public virtual void AddItem(string prod_name, float price)
-        {
-            catalog.AddItem(prod_name, price);
-        }
-        public virtual void RemoveItem(string prod_name)
-        {
-            catalog.RemoveItem(prod_name);
-        }
-        public virtual void AddToStorage(string prod_name, int amount)
-        {
-            store.AddToStorage(prod_name, amount);
-        }
-        public virtual void RemoveFromStorage(string prod_name)
-        {
-            store.RemoveFromStorage(prod_name);
-        }
-        public virtual void AddUser(long id, UserType type)
-        {
-            users.AddUser(id, type);
-        }
-        public virtual void RemoveUser(long id)
-        {
-            users.RemoveUser(id);
-        }
+
+        public override int GetAmount(string prod_name) => store.GetAmount(prod_name);
+        public override UserType GetUser(long id) => users.GetUser(id);
+        public override float GetPrice(string name) => catalog.GetPrice(name);
+        public override bool CheckStorage(string prod_name, int amount) => store.CheckStorage(prod_name, amount);
+        public override bool CheckFunds(float price) => store.CheckFunds(price);
+        public override void IncreaseStock(string name, int amount) => store.IncreaseStock(name, amount);
+        public override void RecordProfit(float money) => store.RecordProfit(money);
+        public override void AddItem(string name, float price) => catalog.AddItem(name, price);
+        public override void RemoveItem(string name) => catalog.RemoveItem(name);
+        public override void AddToStorage(string name, int amount) => store.AddToStorage(name, amount);
+        public override void RemoveFromStorage(string name) => store.RemoveFromStorage(name);
+        public override void AddUser(long id, UserType type) => users.AddUser(id, type);
+        public override void RemoveUser(long id) => users.RemoveUser(id);
     }
 }
