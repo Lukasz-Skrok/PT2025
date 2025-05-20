@@ -22,14 +22,14 @@ namespace DataLayer
         public string Name { get; set; }
 
         [Column]
-        public float Price { get; set; }
+        public double Price { get; set; }
 
         // Property to maintain backward compatibility
-        public Dictionary<string, float> ItemStorage
+        public Dictionary<string, double> ItemStorage
         {
             get
             {
-                var storage = new Dictionary<string, float>();
+                var storage = new Dictionary<string, double>();
                 using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
                 {
                     var items = db.ItemCatalogs.ToList();
@@ -42,7 +42,7 @@ namespace DataLayer
             }
         }
 
-        public void AddItem(string name, float price)
+        public void AddItem(string name, double price)
         {
             if (!string.IsNullOrWhiteSpace(name) && price > 0)
             {
@@ -68,7 +68,7 @@ namespace DataLayer
             }
         }
 
-        public float GetPrice(string name)
+        public double GetPrice(string name)
         {
             using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
             {
@@ -84,6 +84,15 @@ namespace DataLayer
             using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
             {
                 return db.ItemCatalogs.Any(i => i.Name == name);
+            }
+        }
+
+        public List<Item_catalog> GetAllItems_QuerySyntax()
+        {
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+            {
+                var items = (from item in db.ItemCatalogs select item).ToList();
+                return items;
             }
         }
     }

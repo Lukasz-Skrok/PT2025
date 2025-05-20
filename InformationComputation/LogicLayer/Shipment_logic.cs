@@ -12,9 +12,9 @@ namespace LogicLayer
         }
 
         public abstract bool Shipment(string productName, int amount);
-        public abstract Dictionary<string, (int quantity, float price)> GetInventory();
-        public abstract float GetFunds();
-        public abstract float GetPrice(string name);
+        public abstract Dictionary<string, (int quantity, double price)> GetInventory();
+        public abstract double GetFunds();
+        public abstract double GetPrice(string name);
     }
 
     public class ShipmentLogic : Shipment_logic
@@ -28,27 +28,27 @@ namespace LogicLayer
 
             if (!_events.GetAllItemNames().Contains(productName))
             {
-                float defaultPrice = 10.0f;
+                double defaultPrice = 10.0;
                 _events.AddItem(productName, defaultPrice);
             }
 
-            float price = _events.GetPrice(productName);
+            double price = _events.GetPrice(productName);
             _events.RecordProfit(price * amount);
             _events.AddToStorage(productName, amount);
             return true;
         }
 
-        public override Dictionary<string, (int quantity, float price)> GetInventory()
+        public override Dictionary<string, (int quantity, double price)> GetInventory()
         {
             return _events.GetInventory();
         }
 
-        public override float GetFunds()
+        public override double GetFunds()
         {
             return _events.GetFunds();
         }
 
-        public override float GetPrice(string name)
+        public override double GetPrice(string name)
         {
             try
             {

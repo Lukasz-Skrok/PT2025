@@ -15,7 +15,7 @@ namespace LogicLayer
             events1 = events;
         }
         public abstract bool Purchase(string name, int amount);
-        public abstract float GetPrice(string name);
+        public abstract double GetPrice(string name);
     }
 
     public class PurchaseLogic : Purchase_logic
@@ -29,7 +29,7 @@ namespace LogicLayer
                 bool inStorage = events1.CheckStorage(name, amount);
                 if (!inStorage) return false;
 
-                float cost = amount * events1.GetPrice(name);
+                double cost = amount * events1.GetPrice(name);
                 events1.AddToStorage(name, -amount);
                 events1.RecordProfit(cost);
                 return true;
@@ -41,7 +41,7 @@ namespace LogicLayer
             }
         }
 
-        public override float GetPrice(string name)
+        public override double GetPrice(string name)
         {
             try
             {

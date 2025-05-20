@@ -17,7 +17,7 @@ namespace LogicLayerTests
         private User_data users = new UserData();
         private Item_catalog catalog = new ItemCatalog();
         private Store_state store = new StoreState();
-        float totalFunds = (float)15.0;
+        double totalFunds = 15.0;
         public override int GetAmount(string prod_name)
         {
             return store.GetAmount(prod_name);
@@ -26,7 +26,7 @@ namespace LogicLayerTests
         {
             return users.GetUser(id);
         }
-        public override float GetPrice(string name)
+        public override double GetPrice(string name)
         {
             return catalog.GetPrice(name);
         }
@@ -36,21 +36,21 @@ namespace LogicLayerTests
                 return true;
             return false;
         }
-        public override bool CheckFunds(float price)
+        public override bool CheckFunds(double price)
         {
             if (price <= totalFunds)
                 return true;
             return false;
-    }
+        }
         public override void IncreaseStock(string name, int amount)
         {
             store.IncreaseStock(name, amount);
         }
-        public override void RecordProfit(float money)
+        public override void RecordProfit(double money)
         {
             store.RecordProfit(money);
         }
-        public override void AddItem(string prod_name, float price)
+        public override void AddItem(string prod_name, double price)
         {
             this.catalog.AddItem(prod_name, price);
         }

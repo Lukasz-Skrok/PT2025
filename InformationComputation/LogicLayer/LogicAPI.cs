@@ -8,10 +8,10 @@ namespace LogicLayer
     public abstract class LogicAPI
     {
         public abstract bool Purchase(string name, int amount);
-        public abstract float GetPrice(string name);
+        public abstract double GetPrice(string name);
         public abstract bool Shipment(string productName, int amount);
-        public abstract Dictionary<string, (int quantity, float price)> GetInventory();
-        public abstract float GetFunds();
+        public abstract Dictionary<string, (int quantity, double price)> GetInventory();
+        public abstract double GetFunds();
         public abstract bool ItemRanOut(string prod_name);
         public abstract bool CanPurchase(long id);
         public abstract bool CanSupply(long id);
@@ -36,10 +36,10 @@ namespace LogicLayer
         }
 
         public override bool Purchase(string name, int amount) => _purchaseLogic.Purchase(name, amount);
-        public override float GetPrice(string name) => _purchaseLogic.GetPrice(name);
+        public override double GetPrice(string name) => _purchaseLogic.GetPrice(name);
         public override bool Shipment(string productName, int amount) => _shipmentLogic.Shipment(productName, amount);
-        public override Dictionary<string, (int quantity, float price)> GetInventory() => _shipmentLogic.GetInventory();
-        public override float GetFunds() => _shipmentLogic.GetFunds();
+        public override Dictionary<string, (int quantity, double price)> GetInventory() => _shipmentLogic.GetInventory();
+        public override double GetFunds() => _shipmentLogic.GetFunds();
         public override bool ItemRanOut(string prod_name) => _outOfStockLogic.ItemRanOut(prod_name);
         public override bool CanPurchase(long id) => _registerUserLogic.CanPurchase(id);
         public override bool CanSupply(long id) => _registerUserLogic.CanSupply(id);

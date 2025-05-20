@@ -78,6 +78,41 @@ namespace DataLayer
                     )");
                 Console.WriteLine("UserData table created successfully.");
             }
+
+            // Create StoreState table if it doesn't exist
+            if (!TableExists(db, "StoreState"))
+            {
+                db.ExecuteCommand(@"
+                    CREATE TABLE StoreState (
+                        Id INT IDENTITY(1,1) PRIMARY KEY,
+                        TotalFunds FLOAT NOT NULL DEFAULT 1000.0
+                    )");
+                Console.WriteLine("StoreState table created successfully.");
+
+                // Insert initial store state
+                db.ExecuteCommand(@"
+                    INSERT INTO StoreState (TotalFunds) VALUES (1000.0)");
+            }
+
+            // Create Inventory table if it doesn't exist
+            if (!TableExists(db, "Inventory"))
+            {
+                db.ExecuteCommand(@"
+                    CREATE TABLE Inventory (
+                        Id INT IDENTITY(1,1) PRIMARY KEY,
+                        ProductName NVARCHAR(100) NOT NULL,
+                        Quantity INT NOT NULL,
+                        Price FLOAT NOT NULL
+                    )");
+                Console.WriteLine("Inventory table created successfully.");
+
+                // Insert initial inventory
+                db.ExecuteCommand(@"
+                    INSERT INTO Inventory (ProductName, Quantity, Price) VALUES 
+                    ('Apples', 50, 2.5),
+                    ('Bananas', 30, 1.8),
+                    ('Oranges', 40, 3.0)");
+            }
         }
 
         private static bool TableExists(ShopDatabaseDataContext db, string tableName)

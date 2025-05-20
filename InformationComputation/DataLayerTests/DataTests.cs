@@ -30,12 +30,12 @@ namespace DataLayerTests
         public void CatalogTest()
         {
             var events = new Events();
-            events.AddItem("Trombone", (float)200.50);
-            events.AddItem("Sandwich", (float)11.90);
-            float price1 = events.GetPrice("Trombone");
-            float price2 = events.GetPrice("Sandwich");
-            Assert.AreEqual(price1, (float)200.50);
-            Assert.AreEqual(price2, (float)11.90);
+            events.AddItem("Trombone", 200.50);
+            events.AddItem("Sandwich", 11.90);
+            double price1 = events.GetPrice("Trombone");
+            double price2 = events.GetPrice("Sandwich");
+            Assert.AreEqual(price1, 200.50);
+            Assert.AreEqual(price2, 11.90);
         }
     }
 }

@@ -70,6 +70,22 @@ namespace DataLayer
 				return this.GetTable<User_data>();
 			}
 		}
+
+		public System.Data.Linq.Table<Store_state> StoreStates
+		{
+			get
+			{
+				return this.GetTable<Store_state>();
+			}
+		}
+
+		public System.Data.Linq.Table<Inventory> Inventories
+		{
+			get
+			{
+				return this.GetTable<Inventory>();
+			}
+		}
 	}
 }
 #pragma warning restore 1591

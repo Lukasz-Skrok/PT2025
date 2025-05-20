@@ -94,7 +94,7 @@ namespace PresentationLayer
 
             if (int.TryParse(ProductAmount, out int amt) && !string.IsNullOrEmpty(ProductName))
             {
-                float price = _logic.GetPrice(ProductName);
+                double price = _logic.GetPrice(ProductName);
                 if (price <= 0)
                 {
                     Users.Add($"Product '{ProductName}' does not exist.");
@@ -124,7 +124,7 @@ namespace PresentationLayer
 
             if (int.TryParse(ProductAmount, out int amt) && !string.IsNullOrEmpty(ProductName))
             {
-                float price = _logic.GetPrice(ProductName);
+                double price = _logic.GetPrice(ProductName);
                 if (price <= 0)
                 {
                     Users.Add($"Product '{ProductName}' does not exist.");

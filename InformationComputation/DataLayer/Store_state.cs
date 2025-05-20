@@ -1,94 +1,139 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.Linq.Mapping;
 
 namespace DataLayer
 {
-    public abstract class Store_state
+    [Table(Name = "StoreState")]
+    public class Store_state
     {
-        private float totalFunds = 1000.0f; // Initial funds
-        private Dictionary<string, (int quantity, float price)> storage = new();
-
-        public Store_state()
+        static Store_state()
         {
-            // Initial stock setup
-            storage["Apples"] = (50, 2.5f);
-            storage["Bananas"] = (30, 1.8f);
-            storage["Oranges"] = (40, 3.0f);
+            DatabaseInitializer.Initialize();
         }
 
-        public float GetFunds() => totalFunds;
+        [Column(IsPrimaryKey = true, IsDbGenerated = true)]
+        public int Id { get; set; }
 
-        public void RecordProfit(float profit)
+        [Column]
+        public double TotalFunds { get; set; }
+
+        public double GetFunds()
         {
-            totalFunds += profit;
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+            {
+                return db.StoreStates.First().TotalFunds;
+            }
         }
 
-        public bool CheckFunds(float amount)
+        public void RecordProfit(double profit)
         {
-            return totalFunds >= amount;
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+            {
+                var storeState = db.StoreStates.First();
+                storeState.TotalFunds += profit;
+                db.SubmitChanges();
+            }
+        }
+
+        public bool CheckFunds(double amount)
+        {
+            return GetFunds() >= amount;
         }
 
         public bool CheckStorage(string name, int amount)
         {
-            return storage.ContainsKey(name) && storage[name].quantity >= amount;
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+            {
+                var inventory = db.Inventories.FirstOrDefault(i => i.ProductName == name);
+                return inventory != null && inventory.Quantity >= amount;
+            }
         }
 
-        public float GetPrice(string name)
+        public double GetPrice(string name)
         {
-            if (storage.ContainsKey(name))
-                return storage[name].price;
-            throw new Exception($"Product '{name}' not found.");
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+            {
+                var inventory = db.Inventories.FirstOrDefault(i => i.ProductName == name);
+                if (inventory == null)
+                    throw new Exception($"Product '{name}' not found.");
+                return inventory.Price;
+            }
         }
 
         public void AddToStorage(string name, int amount)
         {
-            if (storage.ContainsKey(name))
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
             {
-                var (qty, price) = storage[name];
-                storage[name] = (qty + amount, price);
-            }
-            else
-            {
-                // Default price for new items
-                storage[name] = (amount, 1.0f);
+                var inventory = db.Inventories.FirstOrDefault(i => i.ProductName == name);
+                if (inventory != null)
+                {
+                    inventory.Quantity += amount;
+                }
+                else
+                {
+                    inventory = new Inventory
+                    {
+                        ProductName = name,
+                        Quantity = amount,
+                        Price = 1.0 // Default price
+                    };
+                    db.Inventories.InsertOnSubmit(inventory);
+                }
+                db.SubmitChanges();
             }
         }
 
-        // ✅ Completely remove item from store
         public void RemoveFromStorage(string name)
         {
-            if (storage.ContainsKey(name))
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
             {
-                storage.Remove(name);
-            }
-            else
-            {
-                throw new Exception($"Product '{name}' not found in storage.");
+                var inventory = db.Inventories.FirstOrDefault(i => i.ProductName == name);
+                if (inventory != null)
+                {
+                    db.Inventories.DeleteOnSubmit(inventory);
+                    db.SubmitChanges();
+                }
+                else
+                {
+                    throw new Exception($"Product '{name}' not found in storage.");
+                }
             }
         }
 
-        // ✅ Increases quantity — alias of AddToStorage
         public void IncreaseStock(string name, int amount)
         {
             AddToStorage(name, amount);
         }
 
-        // ✅ Get quantity of specific product
         public int GetAmount(string name)
         {
-            if (storage.ContainsKey(name))
-                return storage[name].quantity;
-            return 0;
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+            {
+                var inventory = db.Inventories.FirstOrDefault(i => i.ProductName == name);
+                return inventory?.Quantity ?? 0;
+            }
         }
 
-        // Optional: expose full inventory
-        public Dictionary<string, (int quantity, float price)> GetInventory()
+        public Dictionary<string, (int quantity, double price)> GetInventory()
         {
-            return new Dictionary<string, (int, float)>(storage);
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+            {
+                return db.Inventories.ToDictionary(
+                    i => i.ProductName,
+                    i => (i.Quantity, i.Price)
+                );
+            }
+        }
+
+        public List<Inventory> GetAllInventory_QuerySyntax()
+        {
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+            {
+                var inventory = (from inv in db.Inventories select inv).ToList();
+                return inventory;
+            }
         }
     }
 }
