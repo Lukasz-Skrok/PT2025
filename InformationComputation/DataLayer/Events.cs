@@ -27,11 +27,12 @@ namespace DataLayer
         public abstract void AddUser(long id, UserType type);
         public abstract void RemoveUser(long id);
         public abstract int GetAmount(string prod_name);
+        public abstract Dictionary<long, UserType> GetAllUsers();
     }
 
     public class Events : DataAPI
     {
-        private User_data users = new UserData();
+        public User_data users = new UserData();
         private Item_catalog catalog = new ItemCatalog();
         private Store_state store = new StoreState();
 
@@ -48,5 +49,19 @@ namespace DataLayer
         public override void RemoveFromStorage(string name) => store.RemoveFromStorage(name);
         public override void AddUser(long id, UserType type) => users.AddUser(id, type);
         public override void RemoveUser(long id) => users.RemoveUser(id);
+        public override Dictionary<long, UserType> GetAllUsers() => users.UserData;
+        public float GetFunds() => store.GetFunds();
+        public Dictionary<string, (int quantity, float price)> GetInventory()
+        {
+            return store.GetInventory(); // Assuming `store` is an instance of Store_state
+        }
+        public bool ItemExists(string name)
+        {
+            return catalog.ContainsItem(name);
+        }
+        public List<string> GetAllItemNames()
+        {
+            return catalog.ItemStorage.Keys.ToList();
+        }
     }
 }

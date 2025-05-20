@@ -7,14 +7,21 @@ using DataLayer;
 
 namespace LogicLayer
 {
-    public class OutOfStock
+    public abstract class OutOfStock
     {
-        private readonly Events events;
+        protected readonly Events events;
         public OutOfStock(Events events)
         {
             this.events = events;
         }
-        public bool ItemRanOut(string prod_name)
+        public abstract bool ItemRanOut(string prod_name);
+    }
+
+    public class OutOfStockLogic : OutOfStock
+    {
+        public OutOfStockLogic(Events events) : base(events) { }
+
+        public override bool ItemRanOut(string prod_name)
         {
             if (events.GetAmount(prod_name) == 0)
             {

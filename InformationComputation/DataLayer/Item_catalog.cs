@@ -11,9 +11,13 @@ namespace DataLayer
         public Dictionary<string, float> ItemStorage = new Dictionary<string, float>();
         public void AddItem(string name, float price)
         {
-            if (name != null && price > 0)
+            if (!string.IsNullOrWhiteSpace(name) && price > 0)
             {
-                ItemStorage.Add(name, price);
+                if (!ItemStorage.ContainsKey(name))
+                {
+                    ItemStorage.Add(name, price);
+                }
+                // else: optionally update price, or ignore
             }
         }
         public void RemoveItem(string name)
@@ -22,7 +26,13 @@ namespace DataLayer
         }
         public float GetPrice(string name)
         {
+            if (!ItemStorage.ContainsKey(name))
+                throw new KeyNotFoundException($"Item '{name}' not found in the catalog.");
             return ItemStorage[name];
+        }
+        public bool ContainsItem(string name)
+        {
+            return ItemStorage.ContainsKey(name);
         }
     }
 }

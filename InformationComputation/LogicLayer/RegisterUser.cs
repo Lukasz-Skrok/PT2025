@@ -4,32 +4,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLayer;
+using UserType = DataLayer.User_data.UserType;
 
 namespace LogicLayer
 {
-    public class RegisterUser
+    public abstract class RegisterUser
     {
-        private readonly Events events;
+        protected readonly Events events;
+
         public RegisterUser(Events events)
         {
             this.events = events;
         }
-        public bool CanPurchase(int id)
+
+        public abstract bool CanPurchase(long id);
+        public abstract bool CanSupply(long id);
+        public abstract void AddUser(long id, UserType userType);
+    }
+
+    public class RegisterUserLogic : RegisterUser
+    {
+        public RegisterUserLogic(Events events) : base(events) { }
+
+        public override bool CanPurchase(long id)
         {
-            if (events.GetUser(id) == User_data.UserType.Customer)
-            {
-                return true;
-            }
-            return false;
+            return events.GetUser(id) == User_data.UserType.Customer;
         }
 
-        public bool CanSupply(int id)
+        public override bool CanSupply(long id)
         {
-            if (events.GetUser(id) == User_data.UserType.Supplier)
+            return events.GetUser(id) == User_data.UserType.Supplier;
+        }
+
+        public override void AddUser(long id, UserType userType)
+        {
+            // Map LogicLayer.UserType → DataLayer.User_data.UserType
+            var internalType = userType switch
             {
-                return true;
-            }
-            return false;
+                UserType.Customer => User_data.UserType.Customer,
+                UserType.Supplier => User_data.UserType.Supplier,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            events.AddUser(id, internalType);
         }
     }
 }

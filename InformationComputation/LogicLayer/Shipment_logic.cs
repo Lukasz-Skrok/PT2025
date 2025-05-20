@@ -1,40 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using DataLayer;
+﻿using DataLayer;
 
 namespace LogicLayer
 {
-    public class Shipment_logic
+    public abstract class Shipment_logic
     {
-        private readonly Events events1;
+        protected readonly Events _events;
+
         public Shipment_logic(Events events)
         {
-                events1 = events;
+            _events = events;
         }
-        public bool Shipment(string prod_name, int amount)
+
+        public abstract bool Shipment(string productName, int amount);
+        public abstract Dictionary<string, (int quantity, float price)> GetInventory();
+        public abstract float GetFunds();
+        public abstract float GetPrice(string name);
+    }
+
+    public class ShipmentLogic : Shipment_logic
+    {
+        public ShipmentLogic(Events events) : base(events) { }
+
+        public override bool Shipment(string productName, int amount)
+        {
+            if (string.IsNullOrWhiteSpace(productName) || amount <= 0)
+                return false;
+
+            if (!_events.GetAllItemNames().Contains(productName))
+            {
+                float defaultPrice = 10.0f;
+                _events.AddItem(productName, defaultPrice);
+            }
+
+            float price = _events.GetPrice(productName);
+            _events.RecordProfit(price * amount);
+            _events.AddToStorage(productName, amount);
+            return true;
+        }
+
+        public override Dictionary<string, (int quantity, float price)> GetInventory()
+        {
+            return _events.GetInventory();
+        }
+
+        public override float GetFunds()
+        {
+            return _events.GetFunds();
+        }
+
+        public override float GetPrice(string name)
         {
             try
             {
-                float shipment_price = events1.GetPrice(prod_name) * amount * (float)0.2;
-                shipment_price = (float)Math.Round(shipment_price, 2);
-                bool canAfford = events1.CheckFunds(shipment_price);
-                if (!canAfford)
-                {
-                    return false;
-                }
-                events1.AddToStorage(prod_name, amount);
-                events1.RecordProfit(shipment_price * (-1));
+                return _events.GetPrice(name);
             }
-            catch (Exception ex)
+            catch
             {
-                return false;
+                return -1; // Or handle it differently if needed
             }
-            
-            return true;
         }
     }
 }

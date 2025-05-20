@@ -9,51 +9,86 @@ namespace DataLayer
 {
     public abstract class Store_state
     {
-        private float totalFunds=0;
-        private Dictionary<string, int> itemStorage = new Dictionary<string, int>();
-        
-        public void AddToStorage(string prod_name, int amount)
+        private float totalFunds = 1000.0f; // Initial funds
+        private Dictionary<string, (int quantity, float price)> storage = new();
+
+        public Store_state()
         {
-            itemStorage.Add(prod_name, amount);
+            // Initial stock setup
+            storage["Apples"] = (50, 2.5f);
+            storage["Bananas"] = (30, 1.8f);
+            storage["Oranges"] = (40, 3.0f);
         }
-        public void RemoveFromStorage(string prod_name)
+
+        public float GetFunds() => totalFunds;
+
+        public void RecordProfit(float profit)
         {
-            itemStorage.Remove(prod_name);
+            totalFunds += profit;
         }
-        public bool CheckStorage(string prod_name, int amount)
+
+        public bool CheckFunds(float amount)
         {
-            int stock = itemStorage[prod_name];
-            if (stock >= amount)
+            return totalFunds >= amount;
+        }
+
+        public bool CheckStorage(string name, int amount)
+        {
+            return storage.ContainsKey(name) && storage[name].quantity >= amount;
+        }
+
+        public float GetPrice(string name)
+        {
+            if (storage.ContainsKey(name))
+                return storage[name].price;
+            throw new Exception($"Product '{name}' not found.");
+        }
+
+        public void AddToStorage(string name, int amount)
+        {
+            if (storage.ContainsKey(name))
             {
-                return true;
+                var (qty, price) = storage[name];
+                storage[name] = (qty + amount, price);
             }
             else
             {
-                return false;
+                // Default price for new items
+                storage[name] = (amount, 1.0f);
             }
         }
-        public int GetAmount(string prod_name)
+
+        // ✅ Completely remove item from store
+        public void RemoveFromStorage(string name)
         {
-            return itemStorage[prod_name];
-        }
-        public bool CheckFunds(float price)
-        {
-            if (price < totalFunds)
+            if (storage.ContainsKey(name))
             {
-                return true;
+                storage.Remove(name);
             }
             else
             {
-                return false;
+                throw new Exception($"Product '{name}' not found in storage.");
             }
         }
-        public void IncreaseStock(string prod_name, int amount)
+
+        // ✅ Increases quantity — alias of AddToStorage
+        public void IncreaseStock(string name, int amount)
         {
-            itemStorage[prod_name] += amount;
+            AddToStorage(name, amount);
         }
-        public void RecordProfit(float money)
+
+        // ✅ Get quantity of specific product
+        public int GetAmount(string name)
         {
-            totalFunds += money;
+            if (storage.ContainsKey(name))
+                return storage[name].quantity;
+            return 0;
+        }
+
+        // Optional: expose full inventory
+        public Dictionary<string, (int quantity, float price)> GetInventory()
+        {
+            return new Dictionary<string, (int, float)>(storage);
         }
     }
 }

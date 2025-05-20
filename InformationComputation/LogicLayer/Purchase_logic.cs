@@ -7,24 +7,50 @@ using DataLayer;
 
 namespace LogicLayer
 {
-    public class Purchase_logic
+    public abstract class Purchase_logic
     {
-        private readonly Events events1;
+        protected readonly Events events1;
         public Purchase_logic(Events events)
         {
             events1 = events;
         }
-        public bool Purchase(string name, int amount)
+        public abstract bool Purchase(string name, int amount);
+        public abstract float GetPrice(string name);
+    }
+
+    public class PurchaseLogic : Purchase_logic
+    {
+        public PurchaseLogic(Events events) : base(events) { }
+
+        public override bool Purchase(string name, int amount)
         {
-            bool inStorage = events1.CheckStorage(name, amount);
-            if (!inStorage)
+            try
             {
+                bool inStorage = events1.CheckStorage(name, amount);
+                if (!inStorage) return false;
+
+                float cost = amount * events1.GetPrice(name);
+                events1.AddToStorage(name, -amount);
+                events1.RecordProfit(cost);
+                return true;
+            }
+            catch
+            {
+                // Item not found or other issue
                 return false;
             }
-            float cost = amount * events1.GetPrice(name);
-            events1.AddToStorage(name, (-1) * amount);
-            events1.RecordProfit(cost);
-            return true;
+        }
+
+        public override float GetPrice(string name)
+        {
+            try
+            {
+                return events1.GetPrice(name);
+            }
+            catch
+            {
+                return -1; // Or handle it differently if needed
+            }
         }
     }
 }

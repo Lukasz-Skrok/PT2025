@@ -15,7 +15,7 @@ namespace DataLayer
             Supplier
         }
 
-        public Dictionary<long, UserType> UserData = new Dictionary<long, UserType>();
+        internal Dictionary<long, UserType> UserData = new Dictionary<long, UserType>();
 
         public void AddUser(long id, UserType type)
         {
