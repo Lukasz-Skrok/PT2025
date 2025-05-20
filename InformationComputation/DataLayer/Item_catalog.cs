@@ -74,7 +74,7 @@ namespace DataLayer
             {
                 var item = db.ItemCatalogs.FirstOrDefault(i => i.Name == name);
                 if (item == null)
-                    throw new KeyNotFoundException($"Item '{name}' not found in the catalog.");
+                throw new KeyNotFoundException($"Item '{name}' not found in the catalog.");
                 return item.Price;
             }
         }

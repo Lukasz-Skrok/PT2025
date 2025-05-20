@@ -54,8 +54,8 @@ namespace DataLayer
                     var user = new User_data { Id = id, Type = (int)type };
                     db.UserDatas.InsertOnSubmit(user);
                     db.SubmitChanges();
-                }
             }
+        }
         }
 
         public void RemoveUser(long id)

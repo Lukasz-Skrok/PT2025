@@ -45,4 +45,13 @@ namespace LogicLayer
         public override bool CanSupply(long id) => _registerUserLogic.CanSupply(id);
         public override void AddUser(long id, UserType userType) => _registerUserLogic.AddUser(id, userType);
     }
+
+    public static class LogicFactory
+    {
+        public static LogicAPI Create()
+        {
+            var events = new DataLayer.Events();
+            return new Logic(events);
+        }
+    }
 } 

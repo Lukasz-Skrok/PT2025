@@ -1,5 +1,4 @@
-﻿using DataLayer;
-using LogicLayer;
+﻿using LogicLayer;
 using Microsoft.Win32;
 using PresentationLayer;
 using System.Windows;
@@ -12,11 +11,8 @@ namespace PresentationLayer
         {
             InitializeComponent();
 
-            // Create the data API
-            Events events = new Events();
-
-            // Create logic API
-            LogicAPI logic = new Logic(events);
+            // Get logic API from factory
+            LogicAPI logic = LogicFactory.Create();
 
             // Pass logic into ViewModel
             UserViewModel userViewModel = new UserViewModel(logic);

@@ -30,7 +30,7 @@ namespace DataLayer
         public void RecordProfit(double profit)
         {
             using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
-            {
+        {
                 var storeState = db.StoreStates.First();
                 storeState.TotalFunds += profit;
                 db.SubmitChanges();
@@ -57,7 +57,7 @@ namespace DataLayer
             {
                 var inventory = db.Inventories.FirstOrDefault(i => i.ProductName == name);
                 if (inventory == null)
-                    throw new Exception($"Product '{name}' not found.");
+            throw new Exception($"Product '{name}' not found.");
                 return inventory.Price;
             }
         }
@@ -70,9 +70,9 @@ namespace DataLayer
                 if (inventory != null)
                 {
                     inventory.Quantity += amount;
-                }
-                else
-                {
+            }
+            else
+            {
                     inventory = new Inventory
                     {
                         ProductName = name,
@@ -94,10 +94,10 @@ namespace DataLayer
                 {
                     db.Inventories.DeleteOnSubmit(inventory);
                     db.SubmitChanges();
-                }
-                else
-                {
-                    throw new Exception($"Product '{name}' not found in storage.");
+            }
+            else
+            {
+                throw new Exception($"Product '{name}' not found in storage.");
                 }
             }
         }

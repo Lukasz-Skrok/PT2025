@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationLayer", "PresentationLayer\PresentationLayer.csproj", "{8186DC7D-7918-4B49-94E8-8F3AF8E72350}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationLayerTests", "PresentationLayerTests\PresentationLayerTests.csproj", "{0670271C-2B22-42E0-8277-707246E34560}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{8186DC7D-7918-4B49-94E8-8F3AF8E72350}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8186DC7D-7918-4B49-94E8-8F3AF8E72350}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8186DC7D-7918-4B49-94E8-8F3AF8E72350}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0670271C-2B22-42E0-8277-707246E34560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0670271C-2B22-42E0-8277-707246E34560}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0670271C-2B22-42E0-8277-707246E34560}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0670271C-2B22-42E0-8277-707246E34560}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
