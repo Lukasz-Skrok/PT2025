@@ -54,6 +54,22 @@ namespace DataLayer
 		{
 			OnCreated();
 		}
+
+		public System.Data.Linq.Table<Item_catalog> ItemCatalogs
+		{
+			get
+			{
+				return this.GetTable<Item_catalog>();
+			}
+		}
+
+		public System.Data.Linq.Table<User_data> UserDatas
+		{
+			get
+			{
+				return this.GetTable<User_data>();
+			}
+		}
 	}
 }
 #pragma warning restore 1591

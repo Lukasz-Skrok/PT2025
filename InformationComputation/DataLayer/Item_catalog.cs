@@ -3,36 +3,88 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Linq.Mapping;
 
 namespace DataLayer
 {
-    public abstract class Item_catalog
+    [Table(Name = "ItemCatalog")]
+    public class Item_catalog
     {
-        public Dictionary<string, float> ItemStorage = new Dictionary<string, float>();
+        static Item_catalog()
+        {
+            DatabaseInitializer.Initialize();
+        }
+
+        [Column(IsPrimaryKey = true, IsDbGenerated = true)]
+        public int Id { get; set; }
+
+        [Column]
+        public string Name { get; set; }
+
+        [Column]
+        public float Price { get; set; }
+
+        // Property to maintain backward compatibility
+        public Dictionary<string, float> ItemStorage
+        {
+            get
+            {
+                var storage = new Dictionary<string, float>();
+                using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+                {
+                    var items = db.ItemCatalogs.ToList();
+                    foreach (var item in items)
+                    {
+                        storage[item.Name] = item.Price;
+                    }
+                }
+                return storage;
+            }
+        }
+
         public void AddItem(string name, float price)
         {
             if (!string.IsNullOrWhiteSpace(name) && price > 0)
             {
-                if (!ItemStorage.ContainsKey(name))
+                using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
                 {
-                    ItemStorage.Add(name, price);
+                    var item = new Item_catalog { Name = name, Price = price };
+                    db.ItemCatalogs.InsertOnSubmit(item);
+                    db.SubmitChanges();
                 }
-                // else: optionally update price, or ignore
             }
         }
+
         public void RemoveItem(string name)
         {
-            ItemStorage.Remove(name);
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+            {
+                var item = db.ItemCatalogs.FirstOrDefault(i => i.Name == name);
+                if (item != null)
+                {
+                    db.ItemCatalogs.DeleteOnSubmit(item);
+                    db.SubmitChanges();
+                }
+            }
         }
+
         public float GetPrice(string name)
         {
-            if (!ItemStorage.ContainsKey(name))
-                throw new KeyNotFoundException($"Item '{name}' not found in the catalog.");
-            return ItemStorage[name];
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+            {
+                var item = db.ItemCatalogs.FirstOrDefault(i => i.Name == name);
+                if (item == null)
+                    throw new KeyNotFoundException($"Item '{name}' not found in the catalog.");
+                return item.Price;
+            }
         }
+
         public bool ContainsItem(string name)
         {
-            return ItemStorage.ContainsKey(name);
+            using (var db = new ShopDatabaseDataContext(DatabaseInitializer.GetConnectionString()))
+            {
+                return db.ItemCatalogs.Any(i => i.Name == name);
+            }
         }
     }
 }
