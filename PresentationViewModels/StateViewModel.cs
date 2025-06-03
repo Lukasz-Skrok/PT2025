@@ -2,8 +2,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using LogicLayer;
+using PresentationModels;
 
-namespace PresentationLayer.ViewModels
+namespace PresentationViewModels
 {
     public class StateViewModel : INotifyPropertyChanged
     {

@@ -5,7 +5,7 @@ using System.Data.Linq.Mapping;
 
 namespace DataLayer
 {
-    [Table(Name = "StoreState")]
+    [Table(Name = "StoreStates")]
     public class State_class : IState
     {
         private readonly IDataRepository _repository;

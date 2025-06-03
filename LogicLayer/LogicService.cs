@@ -11,14 +11,12 @@ namespace LogicLayer
         private readonly Buy_class _buyService;
         private readonly Login_class _loginService;
 
-        public LogicService(IEvents events)
+        public LogicService(IState state, IEvents events)
         {
             _events = events;
 
-            // Create repository and state instance
-            var repository = DataRepository.CreateNewRepository(DatabaseInitializer.GetConnectionString());
-            var state = new State_class(repository);
-
+            // Supply_class and Buy_class depend on IState and IEvents.
+            // These dependencies are now provided to LogicService's constructor.
             _supplyService = new Supply_class(state, events);
             _buyService = new Buy_class(state, events);
             _loginService = new Login_class(events);

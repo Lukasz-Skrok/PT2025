@@ -8,4 +8,10 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PresentationViewModels\PresentationViewModels.csproj" />
+    <ProjectReference Include="..\PresentationModels\PresentationModels.csproj" />
+    <ProjectReference Include="..\LogicLayer\LogicLayer.csproj" />
+  </ItemGroup>
+
 </Project>

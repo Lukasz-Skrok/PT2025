@@ -18,7 +18,9 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\LogicLayer\LogicLayer.csproj" />
-		<ProjectReference Include="..\PresentationLayer\PresentationLayer.csproj" />
+		<ProjectReference Include="..\PresentationModels\PresentationModels.csproj" />
+		<ProjectReference Include="..\PresentationViews\PresentationViews.csproj" />
+		<ProjectReference Include="..\PresentationViewModels\PresentationViewModels.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

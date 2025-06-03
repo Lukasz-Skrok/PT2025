@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using LogicLayer;
 //only logic (abstract) no data layer (dependency injection)
-namespace PresentationLayer.ViewModels
+namespace PresentationViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {

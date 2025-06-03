@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PresentationLayer.ViewModels;
+using PresentationViewModels;
 using System.Collections.Generic;
 using System.Linq;
 

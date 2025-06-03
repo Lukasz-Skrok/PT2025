@@ -4,9 +4,122 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PresentationViews"
+        xmlns:viewmodels="clr-namespace:PresentationViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Shop Management System" Height="300" Width="700">
+    
     <Grid>
+        <TabControl Margin="10">
+            <TabItem Header="Users">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="ID:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox Text="{Binding UsersViewModel.NewUserId, UpdateSourceTrigger=PropertyChanged}" Width="100" Margin="0,0,10,0"/>
+                        <TextBlock Text="Type:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox Text="{Binding UsersViewModel.NewUserType, UpdateSourceTrigger=PropertyChanged}" Width="100" Margin="0,0,10,0"/>
+                        <Button Content="Add User" Command="{Binding UsersViewModel.AddUserCommand}"/>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" 
+                              ItemsSource="{Binding UsersViewModel.Users}" 
+                              SelectedItem="{Binding UsersViewModel.SelectedUser}"
+                              AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding id}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Border Grid.Row="2" 
+                            BorderBrush="Gray" 
+                            BorderThickness="1" 
+                            Margin="0,10,0,0" 
+                            Padding="10">
+                        <StackPanel>
+                            <TextBlock Text="Selected User Details" 
+                                     FontWeight="Bold" 
+                                     Margin="0,0,0,5"/>
+                            <TextBlock>
+                                <Run Text="User Type: "/>
+                                <Run Text="{Binding UsersViewModel.SelectedUserType, Mode=OneWay}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Catalog">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="Name:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox Text="{Binding CatalogViewModel.NewProductName, UpdateSourceTrigger=PropertyChanged}" Width="100" Margin="0,0,10,0"/>
+                        <TextBlock Text="Price:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox Text="{Binding CatalogViewModel.NewProductPrice, UpdateSourceTrigger=PropertyChanged}" Width="100" Margin="0,0,10,0"/>
+                        <Button Content="Add Product" Command="{Binding CatalogViewModel.AddProductCommand}"/>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding CatalogViewModel.Products}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding name}"/>
+                            <DataGridTextColumn Header="Price" Binding="{Binding price}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="State">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="{Binding StateViewModel.CurrentCash, StringFormat='Current Cash: {0:C}'}" 
+                             FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="Product:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox Text="{Binding StateViewModel.NewProductName, UpdateSourceTrigger=PropertyChanged}" Width="100" Margin="0,0,10,0"/>
+                        <TextBlock Text="Amount:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox Text="{Binding StateViewModel.NewProductAmount, UpdateSourceTrigger=PropertyChanged}" Width="100" Margin="0,0,10,0"/>
+                        <Button Content="Add Stock" Command="{Binding StateViewModel.AddStockCommand}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="Select Product:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox ItemsSource="{Binding StateViewModel.Inventory}" 
+                                  SelectedValue="{Binding StateViewModel.SelectedProduct}"
+                                  SelectedValuePath="product"
+                                  DisplayMemberPath="product"
+                                  Width="100" Margin="0,0,10,0"/>
+                        <TextBlock Text="Buy Amount:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox Text="{Binding StateViewModel.BuyAmount, UpdateSourceTrigger=PropertyChanged}" Width="100" Margin="0,0,10,0"/>
+                        <Button Content="Buy" Command="{Binding StateViewModel.BuyCommand}" Margin="0,0,10,0"/>
+                        <TextBlock Text="Supply Amount:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox Text="{Binding StateViewModel.SupplyAmount, UpdateSourceTrigger=PropertyChanged}" Width="100" Margin="0,0,10,0"/>
+                        <Button Content="Supply" Command="{Binding StateViewModel.SupplyCommand}"/>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="3" ItemsSource="{Binding StateViewModel.Inventory}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Product" Binding="{Binding product}"/>
+                            <DataGridTextColumn Header="Amount" Binding="{Binding amount}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
