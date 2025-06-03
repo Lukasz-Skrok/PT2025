@@ -13,5 +13,11 @@ namespace PresentationViews
             InitializeComponent();
             DataContext = viewModel;
         }
+
+        private void ShowPopup_Click(object sender, RoutedEventArgs e)
+        {
+            var popup = new PopupWindow();
+            popup.ShowDialog();
+        }
     }
 }

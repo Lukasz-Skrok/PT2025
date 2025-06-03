@@ -9,7 +9,10 @@
         Title="Shop Management System" Height="300" Width="700">
     
     <Grid>
-        <TabControl Margin="10">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="Show Popup" Width="100" Click="ShowPopup_Click"/>
+        </StackPanel>
+        <TabControl Margin="10,40,10,10">
             <TabItem Header="Users">
                 <Grid>
                     <Grid.RowDefinitions>
