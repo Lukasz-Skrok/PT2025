@@ -40,7 +40,7 @@ namespace DataLayer
     public class Events_class : IEvents
     {
         private readonly IDataRepository _repository;
-        private float _cash = 100.0f; //kasa poza bazen danen bo to nie w tabelce
+        private float _cash = 100.0f;
         private readonly List<EventLog> _eventLogs;
 
         public Events_class()
@@ -128,6 +128,7 @@ namespace DataLayer
         //LINQ query syntax wazne
         public Dictionary<int?, string> GetAllUsers()
         {
+            // LINQ Query Syntax
             var users = from u in _repository.GetAllUsers()
                        select new { Id = (int?)u.Id, Type = u.Type };
             return users.ToDictionary(u => u.Id, u => u.Type);
@@ -135,13 +136,14 @@ namespace DataLayer
 
         public Dictionary<string?, float> GetAllProducts()
         {
-            var products = from c in _repository.GetAllCatalogs()
-                          select new { Product = c.Product, Price = (float)c.Price };
-            return products.ToDictionary(p => p.Product, p => p.Price);
+            // LINQ Method Syntax
+            return _repository.GetAllCatalogs()
+                              .ToDictionary(c => c.Product, c => (float)c.Price);
         }
 
         public Dictionary<string?, int> GetAllInventory()
         {
+            // LINQ Query Syntax
             var inventory = from s in _repository.GetAllStates()
                            select new { Product = s.Product, Amount = s.Amount ?? 0 };
             return inventory.ToDictionary(i => i.Product, i => i.Amount);

@@ -109,14 +109,22 @@ namespace DataLayer
             _context.Users.InsertOnSubmit(user);
             _context.SubmitChanges();
         }
-        //LINQ method syntax musi byc
+
         public User GetUser(int id)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == id);
+            // LINQ Query Syntax
+            var user = from u in _context.Users
+                       where u.Id == id
+                       select u;
+            return user.FirstOrDefault();
+
+            // LINQ Method Syntax (Original)
+            // return _context.Users.FirstOrDefault(u => u.Id == id);
         }
 
         public IEnumerable<User> GetAllUsers()
         {
+            // LINQ Method Syntax
             return _context.Users;
         }
 
